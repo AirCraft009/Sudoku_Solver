@@ -27,8 +27,14 @@ def fill_board(fillString):
         else:
             writeToScreen(fillString[i], i%9*100+50, i//9*100+25)
 drawBoard()   
-f_string = "28x5xxxxxxxxxx91xxxx47xxxx24x19xx2xxxxxx7xxxxxx5xx64x78xxxx79xxxx31xxxxxxxxxx8x65"
+f_string = "687531429951284367423796518342819675769453182518672934295168743836947251174325896"
 fill_board(f_string)
 
-sud = Sudoku.Sudoku(f_string)
-sud.Solve(0.001, window, txtF)
+# sud = Sudoku.Sudoku(f_string)
+# sud.Solve(0.001, window, txtF)
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            break
+    pygame.display.flip()

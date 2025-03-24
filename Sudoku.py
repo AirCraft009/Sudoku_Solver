@@ -19,18 +19,14 @@ class Sudoku():
             if self.board[x] == -1:
                 continue
             self.hardEdges.append(x)
-        self.pastTries = {}
-        for x in range(81):
-            self.pastTries[x] = []
         self.CalcDistances()
         self.calc_Cols()
         self.calc_Rows()
         self.beginn = self.find_first_empty_space()
         self.solved = False
-        self.last_start = -1
-        self.last_end = -1
-        self.high = self.beginn
         print(self.beginn)
+        
+
         
     def fillBoard(self, fillString):
         for i in range(81):
@@ -134,22 +130,13 @@ class Sudoku():
                 space -= 1
             else:
                 return space
-    def Solve(self, pause, screen=None, txtF=None):
-    
+    def Solve(self):
         space = self.find_first_empty_space()
         if space == -1:
             return True
         for num in range(1, 10):
             if self.placeNumber(space, num):
-                if screen != None:
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            pygame.quit()
-                            break
-                    pygame.display.update()
-                    self.writeToScreen(str(num), space%9*100+50, space//9*100+25, screen, txtF)
-                time.sleep(pause)  
-                if self.Solve(pause):
+                if self.Solve():
                     return True
                 self.board[space] = -1
         return False
@@ -161,10 +148,14 @@ class Sudoku():
             
                     
 if __name__ == "__main__":
-    sudoku_field = "28x5xxxxxxxxxx91xxxx47xxxx24x19xx2xxxxxx7xxxxxx5xx64x78xxxx79xxxx31xxxxxxxxxx8x65"
-    print(len(sudoku_field)) 
+    sudoku_field = "xxxx7x3149x1x2xxxxxxxxx7x9x3x8xx9x677x9xxx1x2x18x6x2x42xxx6x8x3xxxxxx7xxx3x2xxx9x"
+    if(len(sudoku_field )!= 81):
+        print(len(sudoku_field)) 
+        raise Exception("Sudoku field must be 81 characters long")
     s = Sudoku(sudoku_field)
-    s.Solve(0)
+    start = time.time_ns()
+    s.Solve()
+    print("Time to solve: " + str((time.time_ns()-start)/1e6)+ " ms")
     print(s.board)
     print(s.generateFillString())
 
